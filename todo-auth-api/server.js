@@ -13,6 +13,7 @@ app.use(routes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
+  console.error('Request error:', err.code || '', err.message || '', err.stack || err);
   res.status(status).json({ message: err.message });
 });
 
@@ -25,7 +26,7 @@ async function main() {
     await connectDatabase();
     console.log('Connected to MySQL and ensured tables exist');
   } catch (err) {
-    console.error('Failed to connect to database:', err.message);
+    console.error('Failed to connect to database. code:', err.code, 'errno:', err.errno, 'message:', err.message, 'stack:', err.stack);
   }
 }
 
