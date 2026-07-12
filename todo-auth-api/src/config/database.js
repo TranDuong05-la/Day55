@@ -5,6 +5,7 @@ const DB_PORT = process.env.DB_PORT || 3306;
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'todo_auth_dev';
+const DB_SSL = process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined;
 
 const pool = mysql.createPool({
   host: DB_HOST,
@@ -12,6 +13,7 @@ const pool = mysql.createPool({
   user: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
+  ssl: DB_SSL,
   waitForConnections: true,
   connectionLimit: 10,
 });
@@ -22,6 +24,7 @@ async function ensureDatabase() {
     port: DB_PORT,
     user: DB_USER,
     password: DB_PASSWORD,
+    ssl: DB_SSL,
   });
   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\``);
   await connection.end();
